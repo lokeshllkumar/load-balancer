@@ -1,5 +1,5 @@
 certs/cert.pem
 
-certs/key.pem
-
 certs/server.csr
+
+certs/key.pem
