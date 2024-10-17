@@ -1,6 +1,6 @@
 certs/*
 
-!certs/.gitignore  # If you want to keep a placeholder .gitignore in certs/
+!certs/.gitignore
 
 *.pem
 *.key
