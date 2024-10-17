@@ -1,5 +1,9 @@
-certs/cert.pem
+certs/*
 
-certs/server.csr
+!certs/.gitignore  # If you want to keep a placeholder .gitignore in certs/
 
-certs/key.pem
+*.pem
+*.key
+*.csr
+*.crt
+*.der
