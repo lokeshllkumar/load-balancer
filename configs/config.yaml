@@ -1,0 +1,5 @@
+backends:
+  - url: ""
+  - url: ""
+
+# define URLs of requests representing services

@@ -31,8 +31,8 @@ func main() {
 	server := handler.CreateServer(router)
 
 	go func() {
-		log.Println("Starting load balancer on :443...")
-		if err := server.ListenAndServeTLS("certs/certs.pem", "certs/key.pem"); err != nil && err != http.ErrServerClosed {
+		log.Println("Starting load balancer on :8443...")
+		if err := server.ListenAndServeTLS("certs/cert.pem", "certs/key.pem"); err != nil && err != http.ErrServerClosed {
 			log.Fatalf("Server error: %v", err)
 		}
 	}()
