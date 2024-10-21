@@ -3,25 +3,42 @@ package utils
 import (
 	"io/ioutil"
 
-	"github.com/lokeshllkumar/load-balancer/internal/backend"
 	"gopkg.in/yaml.v3"
 )
 
-func LoadBackendsFromConfig(path string) (*backend.BackendPool, error) {
+type Config struct {
+	Backends      []BackendConfig `yaml:"backends"`
+	Health        HealthConfig    `yaml:"health"`
+	LoadBalancing LBConfig        `yaml:"load_balancing"`
+}
+
+type BackendConfig struct {
+	URL    string `yaml:"url"`
+	Weight int    `yaml:"weight"`
+	Sticky bool   `yaml:"sticky"`
+}
+
+type HealthConfig struct {
+	Interval int    `yaml:"interval"`
+	Timeout  int    `yaml:"timeout"`
+	Retries  int    `yaml:"retries"`
+	Path     string `yaml:"path"`
+}
+
+type LBConfig struct {
+	Strategy string `yaml:"strategy"`
+}
+
+func LoadConfig(path string) (*Config, error) {
 	data, err := ioutil.ReadFile(path)
 	if err != nil {
 		return nil, err
 	}
 
-	var urls []string
-	if err := yaml.Unmarshal(data, &urls); err != nil {
+	var config Config
+	if err := yaml.Unmarshal(data, &config); err != nil {
 		return nil, err
 	}
 
-	pool := backend.NewBackendPool()
-	for _, url := range urls {
-		pool.AddBackend(url)
-	}
-
-	return pool, nil
+	return &config, nil
 }
