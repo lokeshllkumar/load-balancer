@@ -10,6 +10,8 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/lokeshllkumar/load-balancer/internal/backend"
+	"github.com/lokeshllkumar/load-balancer/internal/balancer"
 	"github.com/lokeshllkumar/load-balancer/internal/handler"
 	"github.com/lokeshllkumar/load-balancer/internal/health"
 	"github.com/lokeshllkumar/load-balancer/internal/metrics"
@@ -17,15 +19,23 @@ import (
 )
 
 func main() {
-	pool, err := utils.LoadBackendsFromConfig("configs/config.yaml")
+	config, err := utils.LoadConfig("configs/config.yaml")
 	if err != nil {
 		log.Fatalf("Failed to load backends: %v", err)
 	}
 
-	go health.StartHealthCheck(pool, 10)
+	pool := backend.NewBackendPool()
+	for _, b := range config.Backends {
+		pool.AddBackend(b.URL, b.Weight, b.Sticky)
+	}
+
+	lb := balancer.NewLoadBalancer(pool, config.LoadBalancing.Strategy)
+
+
+	go health.StartHealthCheck(pool, config.Health.Interval)
 
 	router := gin.Default()
-	handler.RegisterRoutes(router, pool)
+	handler.RegisterRoutes(router, lb, config.LoadBalancing.Strategy)
 	metrics.SetupMetrics(router)
 
 	server := handler.CreateServer(router)
