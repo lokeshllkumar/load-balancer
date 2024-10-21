@@ -8,6 +8,8 @@ import (
 type Backend struct {
 	URL         string
 	Alive       bool
+	Weight      int
+	Sticky      bool
 	Connections int
 }
 
@@ -20,10 +22,15 @@ func NewBackendPool() *BackendPool {
 	return &BackendPool{}
 }
 
-func (p *BackendPool) AddBackend(url string) {
+func (p *BackendPool) AddBackend(url string, weight int, sticky bool) {
 	p.mu.Lock()
 	defer p.mu.Unlock()
-	p.backends = append(p.backends, &Backend{URL: url, Alive: true})
+	p.backends = append(p.backends, &Backend{
+		URL: url, 
+		Alive: true,
+		Weight: weight,
+		Sticky: sticky,
+	})
 }
 
 func (p *BackendPool) RemoveBackend(url string) error {
@@ -31,7 +38,7 @@ func (p *BackendPool) RemoveBackend(url string) error {
 	defer p.mu.Unlock()
 	for ind, b := range p.backends {
 		if b.URL == url {
-			p.backends = append(p.backends[:ind], p.backends[:ind + 1]...)
+			p.backends = append(p.backends[:ind], p.backends[:ind+1]...)
 			return nil
 		}
 	}
@@ -56,3 +63,24 @@ func (p *BackendPool) GetAliveBackends() []*Backend {
 	return alive
 }
 
+func (p *BackendPool) IncrementConnections(url string) {
+	p.mu.Lock()
+	defer p.mu.Unlock()
+	for _, b := range p.backends {
+		if b.URL == url {
+			b.Connections++
+			break
+		}
+	}
+}
+
+func (p *BackendPool) DecrementConnections(url string) {
+	p.mu.Lock()
+	defer p.mu.Unlock()
+	for _, b := range p.backends {
+		if b.URL == url && b.Connections > 0 {
+			b.Connections--
+			break
+		}
+	}
+}
