@@ -19,11 +19,21 @@ func RegisterAPIRoutes(router *gin.Engine, pool *backend.BackendPool) {
 	router.GET("/api/backends", func(c *gin.Context) {
 		listBackends(c, pool)
 	})
+
+	router.POST("/api/backends/increment", func(c *gin.Context) {
+		incrementConnections(c, pool)
+	})
+
+	router.POST("/api/backends/decrement", func(c *gin.Context) {
+		decrementConnections(c, pool)
+	})
 }
 
 func addBackend(c *gin.Context, pool *backend.BackendPool) {
 	var req struct {
-		URL string `json:"url" binding:"required"`
+		URL    string `json:"url" binding:"required"`
+		Weight int    `json:"weight" binding:"required"`
+		Sticky bool   `json:"sticky"`
 	}
 
 	if err := c.ShouldBindJSON(&req); err != nil {
@@ -31,7 +41,7 @@ func addBackend(c *gin.Context, pool *backend.BackendPool) {
 		return
 	}
 
-	pool.AddBackend(req.URL)
+	pool.AddBackend(req.URL, req.Weight, req.Sticky)
 	c.JSON(http.StatusOK, gin.H{"status": "Backend added", "url": req.URL})
 }
 
@@ -50,7 +60,9 @@ func removeBackend(c *gin.Context, pool *backend.BackendPool) {
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"status": "Backend removed", "url": req.URL})
+	c.JSON(http.StatusOK, gin.H{
+		"status": "Backend removed", "url": req.URL,
+	})
 }
 
 func listBackends(c *gin.Context, pool *backend.BackendPool) {
@@ -61,6 +73,8 @@ func listBackends(c *gin.Context, pool *backend.BackendPool) {
 		backendStatuses = append(backendStatuses, gin.H{
 			"url":         b.URL,
 			"alive":       b.Alive,
+			"weight":      b.Weight,
+			"sticky":      b.Sticky,
 			"connections": b.Connections,
 		})
 	}
@@ -70,4 +84,12 @@ func listBackends(c *gin.Context, pool *backend.BackendPool) {
 		"alive":    len(backends),
 		"total":    len(pool.GetBackends()),
 	})
+}
+
+func incrementConnections(c *gin.Context, pool *backend.BackendPool) {
+
+}
+
+func decrementConnections(c *gin.Context, pool *backend.BackendPool) {
+	
 }
