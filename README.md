@@ -56,3 +56,22 @@ go build -o load-balancer .
     ```bash
     curl https://localhost:843/health --insecure
     ```
+- Add a Backend Server
+    - Add a backend server dynamically
+    ```bash
+    curl -X POST https://localhost:8443/api/backends -d '{"url": "https://backend3:8082"}' -H "Content-Type: application/json" --insecure
+    ```
+- List All Backends
+    ```bash
+    curl https://localhost:8443/api/backends --insecure
+    ```
+
+## Load Balancing Strategies
+
+- Round Robin
+    - Distributes requests evenly across all available backends.
+- Least Connections
+    - Directs traffic to the backend with the fewest active connections.
+- Sticky Sessions
+    - Ensures requests from the same client are directed to the same backend.
+
