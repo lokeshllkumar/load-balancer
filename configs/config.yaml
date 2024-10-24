@@ -1,0 +1,14 @@
+#backends:
+#  - url: "http://backend1:8080"
+#    weight: 5
+#    sticky: true
+#  - url: "http://backend2:8081"
+#    weight: 3
+#    sticky: false
+#  - url: "http://backend3:8082"
+#    weight: 2
+#    sticky: false
+#
+#health_check_interval: 10
+#load_balancer_strategy: "round_robin"
+
