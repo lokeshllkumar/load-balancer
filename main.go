@@ -13,7 +13,7 @@ import (
 	"github.com/lokeshllkumar/load-balancer/internal/backend"
 	"github.com/lokeshllkumar/load-balancer/internal/balancer"
 	"github.com/lokeshllkumar/load-balancer/internal/handler"
-	"github.com/lokeshllkumar/load-balancer/internal/health"
+	_ "github.com/lokeshllkumar/load-balancer/internal/health"
 	"github.com/lokeshllkumar/load-balancer/internal/metrics"
 	"github.com/lokeshllkumar/load-balancer/internal/utils"
 )
@@ -32,7 +32,7 @@ func main() {
 	lb := balancer.NewLoadBalancer(pool, config.LoadBalancing.Strategy)
 
 
-	go health.StartHealthCheck(pool, config.Health.Interval)
+	// go health.StartHealthCheck(pool, config.Health.Interval)
 
 	router := gin.Default()
 	handler.RegisterRoutes(router, lb, config.LoadBalancing.Strategy)
