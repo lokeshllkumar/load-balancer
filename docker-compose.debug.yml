@@ -1,0 +1,10 @@
+version: '3.4'
+
+services:
+  loadbalancer:
+    image: loadbalancer
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    ports:
+      - 8443:8443
