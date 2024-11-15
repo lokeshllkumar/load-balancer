@@ -87,9 +87,35 @@ func listBackends(c *gin.Context, pool *backend.BackendPool) {
 }
 
 func incrementConnections(c *gin.Context, pool *backend.BackendPool) {
+	var req struct {
+		URL string `json:"url" binding:"required"`
+	}
 
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	pool.IncrementConnections(req.URL)
+	c.JSON(http.StatusOK, gin.H{
+		"status": "Connection count incremented",
+		"url":    req.URL,
+	})
 }
 
 func decrementConnections(c *gin.Context, pool *backend.BackendPool) {
-	
+	var req struct {
+		URL string `json:"url" binding:"required"`
+	}
+
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	pool.DecrementConnections(req.URL)
+	c.JSON(http.StatusOK, gin.H{
+		"status": "Connection count decremented",
+		"url":    req.URL,
+	})
 }
