@@ -22,6 +22,11 @@ An HTTP load balancer built using Go and the Gin framework, with support for mul
 git clone https://github.com/lokeshllkumar/load-balancer.git
 cd load-balancer
 ```
+- Install the Required Dependencies
+```bash
+go mod tidy
+```
+
 - Generate TLS Certificates
     - Create a directory called ```certs``` to store the certificate
     - Generate an RSA key
