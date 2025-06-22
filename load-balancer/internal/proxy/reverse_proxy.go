@@ -42,7 +42,7 @@ func (h *ReverseProxyHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) 
 		return
 	}
 
-	log.Printf("Routing request for %s to backend: %s (ID: %s) using strategy: %s", r.URL.Host, backend.URL.String(), backend.InstanceID, strategyName)
+	log.Printf("Routing request to backend: %s (ID: %s) using strategy: %s", backend.URL.String(), backend.InstanceID, strategyName)
 
 	backend.IncrementConnections()
 
