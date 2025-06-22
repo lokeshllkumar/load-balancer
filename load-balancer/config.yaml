@@ -1,0 +1,7 @@
+port: 8080
+strategy: round_robin # or least_connections, sticky_sessions
+serviceRegistryURL: http://localhost:8081 # point to local gRPC port of the service registry
+serviceRegistryType: http
+healthCheckInterval: 5s
+backendHealthPath: /health
+healthCheckTimeout: 2s

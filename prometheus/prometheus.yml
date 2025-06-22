@@ -1,0 +1,29 @@
+global:
+  scrape_interval: 15s # How frequently to scrape targets
+  evaluation_interval: 15s # How frequently to evaluate rules
+
+scrape_configs:
+  # Prometheus job
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090'] # default Prometheus metrics endpoint
+
+  # load balancer job
+  - job_name: 'go_load_balancer'
+    static_configs:
+      - targets: ['localhost:8080'] # replace with your load balancer's reachable address
+    metrics_path: /metrics # default Prometheus metrics path for the load balancer
+
+  # service registry job
+  - job_name: 'spring_service_registry'
+    static_configs:
+      - targets: ['localhost:8081']
+    metrics_path: /actuator/prometheus
+
+  # backend service(s) job
+  - job_name: 'backend_service'
+    static_configs:
+    # add each service instance's reachable address as a unique target for Prometheus to scrape metrics from
+      - targets: ['localhost:9092'] 
+      - targets: ['localhost:9093']
+    metrics_path: /metrics
