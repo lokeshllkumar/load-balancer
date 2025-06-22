@@ -64,6 +64,7 @@
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
+			<type>jar</type>
 			<optional>true</optional>
 		</dependency>
 		<dependency>
