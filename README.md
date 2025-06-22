@@ -80,7 +80,7 @@ export REGISTRY_URL="service-registry-address" # the reachable address of the se
 export HOSTNAME="valid-host-name" # the service must be accessible via this host name
 ./backend-service
 
-# can also run a service (can use the .proto file to generate protobuf stubs in the language of your choice to enable service regsitry communication via gRPC or define logic to leverage the REST API)
+# can also run a service built with a different technology stack (can use the .proto file to generate protobuf stubs in the language of your choice to enable service regsitry communication via gRPC or define logic to leverage the REST API)
 ```
 - Configure and start Prometheus
     - Define your Prometheus configuation [here](prometheus/prometheus.yml)
