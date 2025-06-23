@@ -11,7 +11,6 @@ fi
 
 cd "${SERVICE_REGISTRY_DIR}"
 
-# --- Build the Spring Boot Service Registry ---
 echo "Building the Service Registry..."
 mvn clean install
 
