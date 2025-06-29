@@ -1,6 +1,6 @@
 # load-balancer
 
-A simple, high-performance *Load Balancing and Service Discovery* system, capable of discovering and routing traffic to backend services registered with a *Service Registry* via a *Load Balancer*, with *Prometheus* observability integrated. Built simultaneously with [Flux](https://www.github.com/lokeshllkumar/flux), a Go module to build compatible backend services that can be registered with the Service Registry and deployed with the load balancer.
+A simple *Load Balancing and Service Discovery* system, capable of discovering and routing traffic to backend services registered with a *Service Registry* via a *Load Balancer*, with *Prometheus* observability integrated. Built simultaneously with [Flux](https://www.github.com/lokeshllkumar/flux), a Go module to build compatible backend services that can be registered with the Service Registry and deployed with the load balancer.
 
 ## Architecture
 
