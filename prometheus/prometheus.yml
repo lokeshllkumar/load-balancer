@@ -1,6 +1,6 @@
 global:
-  scrape_interval: 15s # How frequently to scrape targets
-  evaluation_interval: 15s # How frequently to evaluate rules
+  scrape_interval: 15s # frequency for scraping targets
+  evaluation_interval: 15s # frequency for evaluating rules
 
 scrape_configs:
   # Prometheus job
